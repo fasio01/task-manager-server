@@ -19,6 +19,9 @@ app.use(cors({
     origin:process.env.CLIENT_URL || "http://localhost:5173",
     credentials:true
 }))
+app.get('/', (req, res) => {
+    res.send('Task Manager API is Running Successfully!')
+})
 app.use("/user",authroute)
 app.use("/task",taskroute)
 // app.listen(port,() => console.log(`server running on port ${port}`))
