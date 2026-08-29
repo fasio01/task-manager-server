@@ -16,8 +16,14 @@ const port = process.env.PORT || 5000
 app.use(express.json())
 app.use(cookieparser())
 app.use(cors({
-    origin:process.env.CLIENT_URL || "http://localhost:5173",
-    credentials:true
+    origin: function (origin, callback) {
+        if (!origin || /\.vercel\.app$/.test(origin) || origin === "http://localhost:5173") {
+            callback(null, true)
+        } else {
+            callback(new Error("Not allowed by CORS"))
+        }
+    },
+    credentials: true
 }))
 app.get('/', (req, res) => {
     res.send('Task Manager API is Running Successfully!')
