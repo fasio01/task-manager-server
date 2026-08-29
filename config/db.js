@@ -1,11 +1,16 @@
 import mongoose from 'mongoose'
 
-const connectDB = async() => {
+let isConnected = false
+
+const connectDB = async () => {
+    if (isConnected) return
+
     try {
-        await mongoose.connect(process.env.MONGO_URI)
-        console.log("mongdb atlas connected")
+        const db = await mongoose.connect(process.env.MONGO_URI)
+        isConnected = db.connections[0].readyState
+        console.log("MongoDB connected for serverless")
     } catch (error) {
-        console.log(`mongo db connection failed ${error}`)
+        console.log(`MongoDB connection error: ${error}`)
     }
 }
 
